@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import { Route, NavLink, Redirect } from 'react-router-dom';
 import * as firebase from 'firebase';
 import NGOprofile from './NGOprofile';
 
@@ -20,6 +19,7 @@ class NGOs extends Component {
   }
 
   componentDidMount() {
+
     const ngosRef = firebase.database().ref('nkos');
     console.log('firebase.database().ref("nkos") = ' + firebase.database().ref('nkos'));
     ngosRef.once('value', snap => {
@@ -33,6 +33,7 @@ class NGOs extends Component {
           subtitle: ngosSnapshot[ngo].smalldescription,
           description: ngosSnapshot[ngo].description,
           img_src: ngosSnapshot[ngo].image,
+          category: ngosSnapshot[ngo].category
         });
       }
       this.setState({
@@ -82,6 +83,7 @@ class NGOs extends Component {
     let categoryButtons = ngoCategories.map(category => {
       return (
           <button
+            className="category-chip"
             key={category}
             onClick={() => this.setCategory(category)}
           >
@@ -90,42 +92,40 @@ class NGOs extends Component {
         );
       });
 
-
-
     let ngos = this.state.ngos.filter(
-      ({ subtitle }) =>
-        subtitle.includes(displayCategory) || displayCategory === "Все"
-    )
-    .map((ngo) => {
-    let icon = ngo.img_src
+      ({ category }) =>
+      category.includes(displayCategory) || displayCategory === "Все"
+      )
+      .map((ngo) => {
+      let icon = ngo.img_src
 
-    return (
-      <div className="card">
-        <img src={icon} alt={ngo.title} className="img_rounded"></img>
-        <h4 className="card_title">{ngo.title}</h4>
-        <p className="card_description">{ngo.subtitle}</p>
-        <button className="card_btn" onClick={() => this.openModalForNGO(ngo)}>профиль</button>
+        return (
+        <div className="card">
+          <img src={icon} alt={ngo.title} className="img_rounded"></img>
+          <h4 className="card_title">{ngo.title}</h4>
+          <p className="card_description">{ngo.subtitle}</p>
+          <button className="card_btn" onClick={() => this.openModalForNGO(ngo)}>профиль</button>
 
-      </div>
-    );
-  });
+        </div>
+        );
+      });
 
   return (
     <div>
       <p className="page-description">Контакты благотворительных фондов, некоммерческих организаций и общественных движений.
-      Вы также можете <a href="https://forms.gle/whvEJmMRDPYGCwUX9" target="_blank" className="external-link"> добавить свою организацию</a> </p>
+      Вы также можете <a href="https://forms.gle/whvEJmMRDPYGCwUX9" target="_blank" className="external-link"> добавить свою организацию</a> 
 
-      <div className="ngoCategories">
-        <button
-          key={all}
-          onClick={() => this.setCategory(all)}
-        >
+      <div className="ngo-categories">
+        <button autoFocus className="category-chip" key={all} onClick={() => this.setCategory(all)}>
           {all}
         </button>
+      {categoryButtons}
 
-       {categoryButtons}
+     </div>
+      
+      </p>
 
-       </div>
+
 
        <div className="cards">
         {ngos}

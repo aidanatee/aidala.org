@@ -330,11 +330,44 @@ hr {
 }
 
 .img_rounded {
+  border-radius: 4px;
   border-radius: 50%;
   height: auto;
   width: 75%;
   margin: 0 auto;
 }
+
+.category-chip {
+  border-radius: 5px;
+  margin: 2px 2px;
+  padding: 0.1em 1em 0.22em;
+  border: 1px solid #A9A9A9;
+  font-size: 14px;
+  color: #A9A9A9;
+  text-decoration: none;
+  transition: background .1s linear, color .1s linear;
+  text-align: center;
+  cursor: pointer;
+}
+
+.category-chip:hover, .category-chip:focus {
+  background-color: grey;
+  color: white;
+}
+
+button {
+  outline: none;
+}
+
+/* Firefox: removes the inner border shown on focus */
+button::-moz-focus-inner {
+  border: none;
+}
+
+.ngo-categories {
+  padding-top: 15px;
+}
+
 
 /* modal component */
 
